@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition template="../../templates/layout.xhtml">
+	<ui:define name="content">
+
+		<h:form prependId="false" id="growlForm">
+			<p:growl id="growl" showDetail="true" escape="false" />
+		</h:form>
+
+		<h:form prependId="false" id="dataForm">
+			<p:panel id="data" toggleable="true" toggleSpeed="250" collapsed="true">
+
+				<f:facet name="header">
+					<h:outputText value="#{messages.label_sentMails}" />
+				</f:facet>
+				<h:outputFormat id="noRecordsFound"
+					value="#{messages.label_no_records_found}"
+					rendered="#{!mailBean.dataVisibleSentMails}">
+					<f:param value="#{messages.label_sentMails}" />
+				</h:outputFormat>
+				<p:dataTable id="sentMailList" value="#{mailBean.sentMails}" var="mail" rendered="#{mailBean.dataVisibleSentMails}"
+					emptyMessage="#{messages.label_no_records_found}" paginator="true"
+					selection="#{mailBean.selectedSentMails}" rowKey="#{mail.id}"
+					paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,25,50" rows="10">
+
+					<p:column selectionMode="multiple" exportable="false" 
+						style="width:16px;text-align:center" />
+					<ui:insert name="mailTableReadFields">
+
+						<ui:include src="fieldsPages/mailTableReadFields.xhtml" />
+					</ui:insert>
+				</p:dataTable>
+
+				<h:commandLink>
+					<p:graphicImage library="images" name="excel.png" width="24"
+						alt="XLS" />
+					<p:dataExporter type="xls" target="sentMailList"
+						fileName="#{messages.label_mail}" />
+				</h:commandLink>
+
+				<h:commandLink>
+					<p:graphicImage library="images" name="pdf.png" width="24"
+						alt="PDF" />
+					<p:dataExporter type="pdf" target="sentMailList"
+						fileName="#{messages.label_mail}" />
+				</h:commandLink>
+
+				<p:commandButton id="deleteSentMailButton"
+					value="#{messages.label_deleteOrder}"
+					action="#{mailBean.deleteSentMail}"
+					update=" :growlForm:growl dataForm" />
+
+				<p:commandButton id="deleteAllSentMailButton"
+					value="#{messages.label_deleteAllOrder}"
+					action="#{mailBean.deleteAllSentMail}"
+					update=":growlForm:growl dataForm" />
+
+			</p:panel>
+
+			<p:panel id="unsentMailsData" toggleable="true" toggleSpeed="250">
+				<f:facet name="header">
+					<h:outputText value="#{messages.label_unsentMails}" />
+				</f:facet>
+				<h:outputFormat id="noRecordsFound2"
+					value="#{messages.label_no_records_found}"
+					rendered="#{!mailBean.dataVisibleUnsentMails}">
+					<f:param value="#{messages.label_unsentMails}" />
+				</h:outputFormat>
+
+				<p:dataTable id="unsentMailList" value="#{mailBean.unsentMails}"
+					var="mail" rendered="#{mailBean.dataVisibleUnsentMails}"
+					resizableColumns="false" 
+					emptyMessage="#{messages.label_no_records_found}" paginator="true"
+					selection="#{mailBean.selectedUnsentMails}" rowKey="#{mail.id}"
+					paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,25,50" rows="10">
+
+					<p:column selectionMode="multiple" exportable="false" 
+						style="width:16px;text-align:center" />
+
+					<ui:insert name="mailTableReadFields">
+						<ui:include src="fieldsPages/mailTableReadFields.xhtml" />
+					</ui:insert>
+
+					<p:column styleClass="action-column" exportable="false">
+						<f:facet name="header">
+							<h:outputText value="#{messages.label_actions}" />
+						</f:facet>
+						<p:commandButton id="viewButton" icon="ui-icon-zoomin"
+							update=":viewForm:viewPanelGrid"
+							oncomplete="PF('viewDialogWidget').show()"
+							title="#{messages.label_view}">
+							<f:setPropertyActionListener value="#{mail}"
+								target="#{mailBean.mail}" />
+						</p:commandButton>
+						<p:tooltip for="viewButton" value="#{messages.label_view}"
+							showEffect="fade" hideEffect="fade" />
+						<p:commandButton id="editButton" icon="ui-icon-pencil"
+							update=":editForm:editPanelGrid" action="#{mailBean.onEdit}"
+							oncomplete="PF('editDialogWidget').show()"
+							title="#{messages.label_edit}">
+							<f:setPropertyActionListener value="#{mail}"
+								target="#{mailBean.mail}" />
+						</p:commandButton>
+						<p:tooltip for="editButton" value="#{messages.label_edit}"
+							showEffect="fade" hideEffect="fade" />
+						<p:commandButton id="deleteButton" icon="ui-icon-trash"
+							oncomplete="PF('deleteDialogWidget').show()"
+							title="#{messages.label_delete}">
+							<f:setPropertyActionListener value="#{mail}"
+								target="#{mailBean.mail}" />
+						</p:commandButton>
+						<p:tooltip for="deleteButton" value="#{messages.label_delete}"
+							showEffect="fade" hideEffect="fade" />
+					</p:column>
+				</p:dataTable>
+
+				<h:commandLink>
+					<p:graphicImage library="images" name="excel.png" width="24"
+						alt="XLS" />
+					<p:dataExporter type="xls" target="unsentMailList"
+						fileName="#{messages.label_mail}" />
+				</h:commandLink>
+
+				<h:commandLink>
+					<p:graphicImage library="images" name="pdf.png" width="24"
+						alt="PDF" />
+					<p:dataExporter type="pdf" target="unsentMailList"
+						fileName="#{messages.label_mail}" />
+				</h:commandLink>
+
+				<p:commandButton id="sendAllUnsentMailButton"
+					value="#{messages.label_sendOrder}"
+					action="#{mailBean.sendUnsentMails}"
+					update=":growlForm:growl dataForm" />
+
+				<p:commandButton id="sendAllUnseltMailButton"
+					value="#{messages.label_sendAllOrder}"
+					action="#{mailBean.sendAllUnsentMails}"
+					update=":growlForm:growl dataForm" />
+
+				<p:commandButton id="deleteUnsentMailButton"
+					value="#{messages.label_deleteOrder}"
+					action="#{mailBean.deleteUnsentMail}"
+					update=" :growlForm:growl dataForm" />
+
+				<p:commandButton id="deleteAllUnsentMailButton"
+					value="#{messages.label_deleteAllOrder}"
+					action="#{mailBean.deleteAllUnsentMail}"
+					update=":growlForm:growl dataForm" />
+			</p:panel>
+
+
+		</h:form>
+
+		<p:dialog id="createDialog" resizable="false"
+			header="#{messages.label_create} #{message.label_mail}"
+			widgetVar="createDialogWidget" dynamic="true"
+			visible="#{mailBean.createDialogVisible}" showEffect="fade">
+			<p:ajax event="close" update=":dataForm:data"
+				listener="#{mailBean.handleDialogClose}" />
+			<p:outputPanel id="createPanel">
+				<h:form id="createForm" enctype="multipart/form-data">
+					<h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog"
+						columnClasses="col1,col2,col3">
+
+						<ui:insert name="mailCreateFields">
+							<ui:include src="fieldsPages/mailWriteFields.xhtml" />
+						</ui:insert>
+
+					</h:panelGrid>
+					<p:commandButton id="createSaveButton"
+						value="#{messages.label_save}" action="#{mailBean.addDefaultMail}"
+						update="createPanelGrid :growlForm:growl :dataForm:data" />
+					<p:commandButton id="createCloseButton"
+						value="#{messages.label_close}"
+						onclick="PF('createDialogWidget').hide()" type="button" />
+				</h:form>
+			</p:outputPanel>
+		</p:dialog>
+		<p:dialog id="editDialog" resizable="false"
+			header="#{messages.label_edit} #{message.label_doctor}"
+			widgetVar="editDialogWidget" dynamic="true" showEffect="fade">
+			<p:ajax event="close" update=":dataForm:data"
+				listener="#{mailBean.handleDialogClose}" />
+			<p:outputPanel id="editPanel">
+				<h:form id="editForm" enctype="multipart/form-data">
+
+					<h:panelGrid id="editPanelGrid" columns="3" styleClass="dialog"
+						columnClasses="col1,col2,col3">
+
+						<ui:insert name="mailEditFields">
+							<ui:include src="fieldsPages/mailWriteFields.xhtml" />
+						</ui:insert>
+
+					</h:panelGrid>
+					<p:commandButton id="editSaveButton" value="#{messages.label_save}"
+						action="#{mailBean.persist}"
+						update="editPanelGrid :growlForm:growl :dataForm:data :dataForm:unsentMailsData" />
+					<p:commandButton id="editCloseButton"
+						value="#{messages.label_close}"
+						onclick="PF('editDialogWidget').hide()" type="button" />
+				</h:form>
+			</p:outputPanel>
+		</p:dialog>
+		<p:dialog id="viewDialog"
+			header="#{messages.label_view} #{message.label_mail}"
+			widgetVar="viewDialogWidget" dynamic="true" showEffect="fade">
+
+			<p:outputPanel id="viewPanel">
+				<h:form id="viewForm" enctype="multipart/form-data">
+					<h:panelGrid id="viewPanelGrid" columns="2" styleClass="dialog"
+						columnClasses="col1,col2">
+
+						<ui:insert name="mailEditFields">
+							<ui:include src="fieldsPages/mailReadFields.xhtml" />
+						</ui:insert>
+
+					</h:panelGrid>
+
+					<p:commandButton id="viewCloseButton"
+						value="#{messages.label_close}"
+						onclick="PF('viewDialogWidget').hide()" type="button" />
+				</h:form>
+			</p:outputPanel>
+		</p:dialog>
+		<p:confirmDialog id="deleteDialog" widgetVar="deleteDialogWidget"
+			message="#{messages.label_delete_record}" showEffect="fade"
+			header="#{messages.label_confirm_deletion}" severity="alarm">
+			<p:outputPanel id="deletePanel">
+				<h:form id="deleteForm">
+					<p:commandButton id="deleteYesButton" value="#{messages.label_yes}"
+						action="#{mailBean.delete}"
+						update=":dataForm:data :dataForm:unsentMailsData :growlForm:growl "
+						oncomplete="PF('deleteDialogWidget').hide()" />
+					<p:commandButton id="deleteNoButton" value="#{messages.label_no}"
+						onclick="PF('deleteDialogWidget').hide()" type="button" />
+				</h:form>
+			</p:outputPanel>
+		</p:confirmDialog>
+
+	</ui:define>
+</ui:composition>
+</html>

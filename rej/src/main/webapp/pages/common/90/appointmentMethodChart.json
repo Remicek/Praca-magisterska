@@ -1,0 +1,24 @@
+{
+"cols": [
+{"label": "method", "type": "string"},
+{"label": "Average time [s]", "type": "number"},
+{"label": "StdDev", "type": "number"},
+{"label": "GC time [s]", "type": "number"},
+{"label": "GC average [s]", "type": "number"},
+{"label": "StdDev", "type": "number"},
+{"label": "GC calls", "type": "number"},
+{"label": "benchmark rounds", "type": "number"},
+{"label": "warmup rounds", "type": "number"},
+{"label": "Total benchmark time", "type": "number"},
+{"label": "Total warmup time", "type": "number"}
+],
+"rows": [
+{"c": [{"v": "testFindAppointmentEntries"}, {"v": 0.18}, {"v": 0.01}, {"v": 0.07}, {"v": 0.0}, {"v": 0.0}, {"v": 51}, {"v": 10}, {"v": 5}, {"v": 1.78}, {"v": 1.61}]},
+{"c": [{"v": "testFlush"}, {"v": 0.16}, {"v": 0.0}, {"v": 0.06}, {"v": 0.0}, {"v": 0.0}, {"v": 49}, {"v": 10}, {"v": 5}, {"v": 1.6}, {"v": 0.82}]},
+{"c": [{"v": "testPersist"}, {"v": 0.16}, {"v": 0.01}, {"v": 0.06}, {"v": 0.0}, {"v": 0.0}, {"v": 51}, {"v": 10}, {"v": 5}, {"v": 1.64}, {"v": 0.81}]},
+{"c": [{"v": "testMergeUpdate"}, {"v": 0.17}, {"v": 0.01}, {"v": 0.06}, {"v": 0.0}, {"v": 0.0}, {"v": 50}, {"v": 10}, {"v": 5}, {"v": 1.67}, {"v": 0.81}]},
+{"c": [{"v": "testFindAppointment"}, {"v": 0.16}, {"v": 0.01}, {"v": 0.06}, {"v": 0.0}, {"v": 0.0}, {"v": 50}, {"v": 10}, {"v": 5}, {"v": 1.62}, {"v": 0.81}]},
+{"c": [{"v": "testCountAppointments"}, {"v": 0.16}, {"v": 0.0}, {"v": 0.06}, {"v": 0.0}, {"v": 0.0}, {"v": 50}, {"v": 10}, {"v": 5}, {"v": 1.62}, {"v": 0.81}]},
+{"c": [{"v": "testFindAllAppointments"}, {"v": 0.16}, {"v": 0.01}, {"v": 0.06}, {"v": 0.0}, {"v": 0.0}, {"v": 50}, {"v": 10}, {"v": 5}, {"v": 1.65}, {"v": 0.82}]},
+{"c": [{"v": "testRemove"}, {"v": 0.17}, {"v": 0.01}, {"v": 0.06}, {"v": 0.0}, {"v": 0.0}, {"v": 50}, {"v": 10}, {"v": 5}, {"v": 1.66}, {"v": 0.82}]}
+]}

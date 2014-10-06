@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"> <ui:composition>
+
+	<p:column filterBy="#{mail.subject}" sortBy="#{mail.subject}"
+		filterMatchMode="contains">
+		<f:facet name="header">
+			<h:outputText value="#{messages.label_subject}" />
+		</f:facet>
+		<h:outputText value="#{mail.subject}" />
+	</p:column>
+
+	<p:column filterBy="#{mail.body}" sortBy="#{mail.body}"
+		filterMatchMode="contains">
+		<f:facet name="header">
+			<h:outputText value="#{messages.label_body}" />
+		</f:facet>
+		<h:outputText value="#{mail.body}" />
+	</p:column>
+
+		<p:column filterBy="#{mail.dateMail}" sortBy="#{mail.dateMail}"
+		filterMatchMode="contains">
+		<f:facet name="header">
+			<h:outputText value="#{messages.label_date}" />
+		</f:facet>
+		<h:outputText value="#{mail.dateMail}" >
+		 <f:convertDateTime pattern="dd.MM.YYYY HH:mm" />
+		  </h:outputText>
+	</p:column>
+	
+		<p:column filterBy="#{mail.appointment}" sortBy="#{mail.appointment}"
+		filterMatchMode="contains">
+		<f:facet name="header">
+			<h:outputText value="#{messages.label_appointment}" />
+		</f:facet>
+		<h:outputText value="#{mail.appointment.toStringAppointment()}" />
+	</p:column>
+	
+	<p:column filterBy="#{mail.send}" sortBy="#{mail.send}"
+		filterMatchMode="contains">
+		<f:facet name="header">
+			<h:outputText value="#{messages.label_send}" />
+		</f:facet>
+		<h:outputText value="#{mail.send}" />
+	</p:column>
+	
+	<p:column filterBy="#{mail.description}" sortBy="#{mail.description}"
+		filterMatchMode="contains">
+		<f:facet name="header">
+			<h:outputText value="#{messages.label_description}" />
+		</f:facet>
+		<h:outputText value="#{mail.description}" />
+	</p:column>
+
+</ui:composition> </html>

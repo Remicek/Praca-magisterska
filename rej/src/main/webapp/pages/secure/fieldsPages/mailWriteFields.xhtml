@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"> 
+	<ui:composition>
+
+<p:outputLabel value="#{messages.label_subject}" for="subject" />
+	<p:inputText id="subject" value="#{mailBean.mail.subject}"
+		required="true" requiredMessage="#{messages.required}">
+	</p:inputText>
+<!-- 	<p:message for="subject" /> -->
+
+	<p:outputLabel value="#{messages.label_body}" for="body" />
+	<p:inputText id="body" value="#{mailBean.mail.body}"
+		required="true" requiredMessage="#{messages.required}">
+	</p:inputText>
+<!-- 	<p:message for="body" /> -->
+
+	<h:outputLabel for="appointment" value="#{messages.label_appointment}" />
+	<p:autoComplete id="appointment"
+		value="#{mailBean.mail.appointment}" var="appointment"
+		itemLabel="#{appointment.doctor.surname}  #{appointment.patient.surname} #{appointment.appointmentStartDate} #{appointment.appointmentEndtDate}"
+		emptyMessage="#{messages.label_no_records_found}"
+		placeholder="#{messages.label_appointment}" 
+		converter="appointmentConverter" itemValue="#{appointment}"
+		completeMethod="#{mailBean.completeAppointment}" 
+		required="true" requiredMessage="#{messages.required}" dropdown="true"> 
+	</p:autoComplete>
+<!-- 	<p:message for="appointment" /> -->
+
+
+</ui:composition> </html>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+		xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"> <ui:composition>
+	
+	<p:column headerText="Lekarz" filterBy="#{bhours.doctor.surname}" rendered="false"
+						sortBy="#{bhours.doctor.surname}" filterMatchMode="startsWith">
+						<h:outputText value="#{bhours.doctor.surname}" rendered="false"/>
+					</p:column>
+
+					<p:column headerText="Dzień tygodnia" filterBy="#{bhours.weekDay}" 
+						sortBy="#{bhours.weekDay}" filterMatchMode="startsWith">
+						<h:outputText value="#{bhours.weekDay}"
+							converter="dayOfWeekConverter" />
+					</p:column>
+
+					<p:column headerText="Od godziny" filterBy="#{bhours.open_time}"
+						sortBy="#{bhours.open_time}" filterMatchMode="contains">
+						<h:outputText value="#{bhours.open_time}">
+							<f:convertDateTime pattern="HH:mm" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="Do godziny" filterBy="#{bhours.close_time}"
+						sortBy="#{bhours.close_time}" filterMatchMode="contains">
+						<h:outputText value="#{bhours.close_time}">
+							<f:convertDateTime pattern="HH:mm" />
+						</h:outputText>
+					</p:column>
+
+</ui:composition> </html>

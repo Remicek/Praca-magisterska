@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#pages#secure#secured.xhtml"
+  PATH="/pages/secure/secured.xhtml" SHAPE="256,33,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#secure#secured.xhtml:0" NAME="item"
+   PATH="/pages/secure/secured.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="loggedout:#{loginBean.logout}:#pages#common#login.xhtml"
+    NAME="output" PATH="/pages/common/login.xhtml"
+    TARGET="rules:#pages#common#login.xhtml"
+    TITLE="#{loginBean.logout}:loggedout" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#common#login.xhtml"
+  PATH="/pages/common/login.xhtml" SHAPE="32,161,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#pages#common#login.xhtml:0" NAME="item"
+   PATH="/pages/common/login.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT
+    ID="secured:#{loginBean.login}:#pages#secure#main.xhtml"
+    NAME="output" PATH="/pages/secure/main.xhtml"
+    TARGET="rules:#pages#secure#main.xhtml"
+    TITLE="#{loginBean.login}:secured" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#pages#secure#main.xhtml"
+  PATH="/pages/secure/main.xhtml" SHAPE="240,145,0,0" model-entity="JSFProcessGroup"/>
+</PROCESS>

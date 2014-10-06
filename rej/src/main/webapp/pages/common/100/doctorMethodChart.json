@@ -1,0 +1,23 @@
+{
+"cols": [
+{"label": "method", "type": "string"},
+{"label": "Average time [s]", "type": "number"},
+{"label": "StdDev", "type": "number"},
+{"label": "GC time [s]", "type": "number"},
+{"label": "GC average [s]", "type": "number"},
+{"label": "StdDev", "type": "number"},
+{"label": "GC calls", "type": "number"},
+{"label": "benchmark rounds", "type": "number"},
+{"label": "warmup rounds", "type": "number"},
+{"label": "Total benchmark time", "type": "number"},
+{"label": "Total warmup time", "type": "number"}
+],
+"rows": [
+{"c": [{"v": "testFlush"}, {"v": 0.04}, {"v": 0.0}, {"v": 0.01}, {"v": 0.0}, {"v": 0.0}, {"v": 12}, {"v": 10}, {"v": 5}, {"v": 0.44}, {"v": 0.23}]},
+{"c": [{"v": "testPersist"}, {"v": 0.04}, {"v": 0.0}, {"v": 0.01}, {"v": 0.0}, {"v": 0.0}, {"v": 12}, {"v": 10}, {"v": 5}, {"v": 0.43}, {"v": 0.22}]},
+{"c": [{"v": "testFindDoctor"}, {"v": 0.04}, {"v": 0.0}, {"v": 0.01}, {"v": 0.0}, {"v": 0.0}, {"v": 12}, {"v": 10}, {"v": 5}, {"v": 0.43}, {"v": 0.22}]},
+{"c": [{"v": "testMergeUpdate"}, {"v": 0.05}, {"v": 0.01}, {"v": 0.01}, {"v": 0.0}, {"v": 0.0}, {"v": 12}, {"v": 10}, {"v": 5}, {"v": 0.45}, {"v": 0.23}]},
+{"c": [{"v": "testCountDoctors"}, {"v": 0.04}, {"v": 0.0}, {"v": 0.01}, {"v": 0.0}, {"v": 0.0}, {"v": 12}, {"v": 10}, {"v": 5}, {"v": 0.44}, {"v": 0.23}]},
+{"c": [{"v": "testFindAllDoctors"}, {"v": 0.04}, {"v": 0.0}, {"v": 0.01}, {"v": 0.0}, {"v": 0.0}, {"v": 13}, {"v": 10}, {"v": 5}, {"v": 0.44}, {"v": 0.22}]},
+{"c": [{"v": "testFindDoctorEntries"}, {"v": 0.04}, {"v": 0.0}, {"v": 0.01}, {"v": 0.0}, {"v": 0.0}, {"v": 12}, {"v": 10}, {"v": 5}, {"v": 0.44}, {"v": 0.22}]}
+]}

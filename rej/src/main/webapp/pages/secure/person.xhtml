@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:p="http://primefaces.org/ui"> <ui:composition
+	template="../../templates/layout.xhtml">
+	<ui:define name="content">
+		<h:form prependId="false" id="growlForm">
+			<p:growl id="growl" showDetail="false" globalOnly="true" />
+		</h:form>
+		<h:form prependId="false" id="dataForm">
+			<p:panel id="data" toggleable="true" toggleSpeed="250">
+				<f:facet name="header">
+					<h:outputText value="#{personBean.name}" />
+				</f:facet>
+				<h:outputFormat id="noRecordsFound"
+					value="#{messages.label_no_records_found}"
+					rendered="#{!personBean.dataVisible}">
+					<f:param value="People" />
+				</h:outputFormat>
+				<p:dataTable id="list" value="#{personBean.allPeople}" var="person" 
+					rendered="#{personBean.dataVisible}" resizableColumns="false"
+					paginator="true" filteredValue="#{personBean.filteredPeople}" emptyMessage="#{messages.label_no_records_found}"
+					paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,25,50" rows="10" >
+
+					<p:column filterBy="#{person.firstName}"
+						sortBy="#{person.firstName}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="#{messages.label_name}" />
+						</f:facet>
+						<h:outputText value="#{person.firstName}" />
+					</p:column>
+
+					<p:column filterBy="#{person.surname}" sortBy="#{person.surname}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="#{messages.label_surname}" />
+						</f:facet>
+						<h:outputText value="#{person.surname}" />
+					</p:column>
+
+					<p:column filterBy="#{person.pesel}" sortBy="#{person.pesel}"
+						filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="#{messages.label_pesel}" />
+						</f:facet>
+						<h:outputText value="#{person.pesel}" />
+					</p:column>
+
+					<p:column filterBy="#{person.birthDate}"
+						sortBy="#{person.birthDate}" filterMatchMode="contains">
+						<f:facet name="header">
+							<h:outputText value="#{messages.label_birthdate}" />
+						</f:facet>
+						<h:outputText value="#{person.birthDate}">
+							<f:convertDateTime pattern="dd.MM.yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column styleClass="action-column" exportable="false">
+						<f:facet name="header">
+							<h:outputText value="Edycja" />
+						</f:facet>
+						<p:commandButton id="viewButton" icon="ui-icon-zoomin"
+							update=":viewForm:viewPanelGrid"
+							oncomplete="PF('viewDialogWidget').show()"
+							title="#{messages.label_view}">
+							<f:setPropertyActionListener value="#{person}"
+								target="#{personBean.person}" />
+						</p:commandButton>
+						<p:tooltip for="viewButton" value="#{messages.label_view}"
+							showEffect="fade" hideEffect="fade" />
+						<p:commandButton id="editButton" icon="ui-icon-pencil"
+							update=":editForm:editPanelGrid" action="#{personBean.onEdit}"
+							oncomplete="PF('editDialogWidget').show()"
+							title="#{messages.label_edit}">
+							<f:setPropertyActionListener value="#{person}"
+								target="#{personBean.person}" />
+						</p:commandButton>
+						<p:tooltip for="editButton" value="#{messages.label_edit}"
+							showEffect="fade" hideEffect="fade" />
+						<p:commandButton id="deleteButton" icon="ui-icon-trash"
+							oncomplete="PF('deleteDialogWidget').show()"
+							title="#{messages.label_delete}">
+							<f:setPropertyActionListener value="#{person}"
+								target="#{personBean.person}" />
+						</p:commandButton>
+						<p:tooltip for="deleteButton" value="#{messages.label_delete}"
+							showEffect="fade" hideEffect="fade" />
+					</p:column>
+				</p:dataTable>
+								   <h:commandLink>
+                <p:graphicImage library="images" name="excel.png" width="24" alt="XLS"/>
+                <p:dataExporter type="xls" target="list" fileName="#{messages.label_patient2}" />
+            </h:commandLink>
+ 
+            <h:commandLink>
+                <p:graphicImage library="images" name="pdf.png" width="24" alt="PDF"/>
+                <p:dataExporter type="pdf" target="list" fileName="#{messages.label_patient2}"/>
+            </h:commandLink>
+			</p:panel>
+		</h:form>
+		
+		<p:dialog id="createDialog"
+			header="#{messages.label_create} #{messages.label_patient}"
+			widgetVar="createDialogWidget" dynamic="true"
+			visible="#{personBean.createDialogVisible}" showEffect="fade">
+			<p:ajax event="close" update=":dataForm:data"
+				listener="#{personBean.handleDialogClose}" />
+			<p:outputPanel id="createPanel">
+				<h:form id="createForm" enctype="multipart/form-data">
+					<h:panelGrid id="createPanelGrid" columns="3" styleClass="dialog"
+						columnClasses="col1,col2,col3">
+
+						<ui:insert name="pesonCreateFields">
+							<ui:include src="fieldsPages/personWriteFields.xhtml" />
+						</ui:insert>
+
+					</h:panelGrid>
+					<p:commandButton id="createSaveButton"
+						value="#{messages.label_save}" action="#{personBean.persist}"
+						update="createPanelGrid :growlForm:growl :dataForm:data" />
+					<p:commandButton id="createCloseButton"
+						value="#{messages.label_close}"
+						onclick="PF('createDialogWidget').hide()" type="button" />
+				</h:form>
+			</p:outputPanel>
+		</p:dialog>
+	
+<p:dialog id="editDialog"
+			header="#{messages.label_edit} #{messages.label_patient}"
+			widgetVar="editDialogWidget" dynamic="true" maximizable="true"
+			showEffect="fade">
+			<p:ajax event="close" update=":dataForm:data"
+				listener="#{personBean.handleDialogClose}" />
+			<p:outputPanel id="editPanel">
+				<h:form id="editForm" enctype="multipart/form-data">
+					<h:panelGrid id="editPanelGrid" columns="3" styleClass="dialog"
+						columnClasses="col1,col2,col3">
+
+						<ui:insert name="pesonEditFields">
+							<ui:include src="fieldsPages/personWriteFields.xhtml" />
+						</ui:insert>
+
+					</h:panelGrid>
+
+					<p:commandButton id="editSaveButton" value="#{messages.label_save}"
+						action="#{personBean.persist}"
+						update="editPanelGrid :growlForm:growl :dataForm:data" />
+					<p:commandButton id="editCloseButton"
+						value="#{messages.label_close}"
+						onclick="PF('editDialogWidget').hide()" type="button" />
+				</h:form>
+			</p:outputPanel>
+		</p:dialog>
+		
+		<p:dialog id="viewDialog"
+			header="#{messages.label_view} #{messages.label_patient}"
+			widgetVar="viewDialogWidget" dynamic="true" showEffect="fade">
+			<p:outputPanel id="viewPanel">
+				<h:form id="viewForm" enctype="multipart/form-data">
+					<h:panelGrid id="viewPanelGrid" columns="2" styleClass="dialog"
+						columnClasses="col1,col2">
+
+						<ui:insert name="pesonViewields">
+							<ui:include src="fieldsPages/personReadFields.xhtml" />
+						</ui:insert>
+
+					</h:panelGrid>
+					<p:commandButton id="viewCloseButton"
+						value="#{messages.label_close}"
+						onclick="PF('viewDialogWidget').hide()" type="button" />
+				</h:form>
+			</p:outputPanel>
+		</p:dialog>
+		<p:confirmDialog id="deleteDialog" widgetVar="deleteDialogWidget"
+			message="#{messages.label_delete_record}" showEffect="fade"
+			header="#{messages.label_confirm_deletion}" severity="alarm">
+			<p:outputPanel id="deletePanel">
+				<h:form id="deleteForm">
+					<p:commandButton id="deleteYesButton" value="#{messages.label_yes}"
+						action="#{personBean.delete}"
+						update=":dataForm:data :growlForm:growl :dataForm:data"
+						oncomplete="PF('deleteDialogWidget').hide()" />
+					<p:commandButton id="deleteNoButton" value="#{messages.label_no}"
+						onclick="PF('deleteDialogWidget').hide()" type="button" />
+				</h:form>
+			</p:outputPanel>
+		</p:confirmDialog>
+	</ui:define>
+</ui:composition> </html>

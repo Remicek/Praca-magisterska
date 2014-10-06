@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"> <ui:composition>
+	
+	<p:column filterBy="#{appointment.appointmentDetails}"
+						sortBy="#{appointment.appointmentDetails}"
+						filterMatchMode="contains"
+						headerText="#{messages.label_appointmentdetails}">
+						<h:outputText value="#{appointment.appointmentDetails}" />
+					</p:column>
+
+					<p:column headerText="#{messages.label_appointmentstartDate}"
+						filterBy="#{appointment.appointmentStartDate}"
+						sortBy="#{appointment.appointmentStartDate}"
+						filterMatchMode="contains">
+						<h:outputText value="#{appointment.appointmentStartDate}">
+							<f:convertDateTime pattern="dd.MM.YYYY HH:mm" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="#{messages.label_appointmentEndtDate}"
+						filterBy="#{appointment.appointmentEndtDate}"
+						sortBy="#{appointment.appointmentEndtDate}"
+						filterMatchMode="contains">
+						<h:outputText value="#{appointment.appointmentEndtDate}">
+							<f:convertDateTime pattern="dd.MM.YYYY HH:mm" />
+						</h:outputText>
+					</p:column>
+
+					<p:column headerText="#{messages.label_doctor2}"
+						filterBy="#{appointment.doctor.surname}"
+						sortBy="#{appointment.doctor.surname}" filterMatchMode="contains">
+						<h:outputText value="#{appointment.doctor.surname}" />
+					</p:column>
+
+					<p:column headerText="#{messages.label_patient2}"
+						filterBy="#{appointment.patient.surname}"
+						sortBy="#{appointment.patient.surname}" filterMatchMode="contains">
+						<h:outputText value="#{appointment.patient.surname}" />
+					</p:column>
+
+</ui:composition> </html>

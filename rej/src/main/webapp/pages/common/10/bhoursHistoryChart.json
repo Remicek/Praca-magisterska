@@ -1,0 +1,16 @@
+{
+"cols": [
+{"label": "Run", "type": "string"},
+{"label": "Custom key", "type": "string"},
+{"label": "Timestamp", "type": "string"},
+{"label": "testCountBhourses", "type": "string"} ,
+{"label": "testFindAllBhourses", "type": "string"} ,
+{"label": "testFindBhours", "type": "string"} ,
+{"label": "testFindBhoursEntries", "type": "string"} ,
+{"label": "testFlush", "type": "string"} ,
+{"label": "testMergeUpdate", "type": "string"} ,
+{"label": "testPersist", "type": "string"} ,
+{"label": "testRemove", "type": "string"} ],
+"rows": [
+{"c": [{"v": "1"}, {"v": "[1]"}, {"v": "2014-09-06 13:06:28.914"}, {"v": 0.013}, {"v": 0.013}, {"v": 0.014}, {"v": 0.013}, {"v": 0.013}, {"v": 0.013}, {"v": 0.014}, {"v": 0.014}]}
+]}

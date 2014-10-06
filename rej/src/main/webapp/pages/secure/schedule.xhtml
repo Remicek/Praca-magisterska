@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition template="../../templates/layout.xhtml">
+	<ui:define name="content">
+		<h:form prependId="false" id="growlForm">
+			<p:growl id="growl" showDetail="true" escape="false" />
+		</h:form>
+
+		<h:form id="filterForm">
+			<p:panel id="filter" header="Filtrowanie" widgetVar="panel"
+				style="margin-bottom:20px">
+
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="#{messages.label_appointmentdetails}"
+						for="appointmentDetailsInput" />
+					<p:inputText id="appointmentDetailsInput"
+						value="#{scheduleBean.appointmentForFilter.appointmentDetails}" />
+
+					<p:outputLabel value="#{messages.label_doctor2}"
+						for="doctorDropDown" />
+					<p:autoComplete id="doctorDropDown"
+						value="#{scheduleBean.appointmentForFilter.doctor}" var="doc"
+						completeMethod="#{appointmentBean.completeDoctor}"
+						itemLabel="#{doc.surname} #{doc.firstName}"
+						emptyMessage="#{messages.label_no_records_found}"
+						placeholder="#{messages.label_doctor2}" dropdown="true"
+						converter="doctorConverter" itemValue="#{doc}"
+						forceSelection="true">
+
+						<p:ajax event="itemSelect"
+							listener="#{scheduleBean.onDoctorSelect}"
+							update=":growlForm:growl" />
+					</p:autoComplete>
+
+					<p:outputLabel for="patientDropDown"
+						value="#{messages.label_patient2}" />
+					<p:autoComplete id="patientDropDown"
+						value="#{scheduleBean.appointmentForFilter.patient}" var="pat"
+						itemLabel="#{pat.surname} #{pat.firstName}"
+						emptyMessage="#{messages.label_no_records_found}"
+						placeholder="#{messages.label_patient2}"
+						converter="personConverter" itemValue="#{pat}" dropdown="true"
+						completeMethod="#{appointmentBean.completePatient}"
+						forceSelection="true" />
+
+					<p:outputLabel for="dateBegin"
+						value="#{messages.label_appointmentstartDate}" />
+					<p:calendar id="dateBegin"
+						value="#{scheduleBean.appointmentForFilter.appointmentStartDate}"
+						locale="pl" pattern="MM/dd/yyyy HH:mm" mask="true">
+						<p:clientValidator event="keyup" />
+						<p:ajax event="dateSelect" update="dateEnd" />
+					</p:calendar>
+
+					<p:outputLabel for="dateEnd"
+						value="#{messages.label_appointmentEndtDate}" />
+					<p:calendar id="dateEnd"
+						value="#{scheduleBean.appointmentForFilter.appointmentEndtDate}"
+						mindate="#{scheduleBean.appointmentForFilter.appointmentStartDate}"
+						locale="pl" pattern="MM/dd/yyyy HH:mm" mask="true">
+						<f:attribute name="startDate"
+							value="#{scheduleBean.appointmentForFilter.appointmentStartDate}" />
+						<f:validator validatorId="custom.dateRangeValidator" />
+					</p:calendar>
+
+					<p:commandButton ajax="false" value="#{messages.label_apply}"
+						id="filterButton" actionListener="#{scheduleBean.updateAllEvents}"
+						styleClass="ui-priority-primary" />
+
+					<p:commandButton ajax="false" value="#{messages.label_clear}"
+						id="ClearFilterButton"
+						actionListener="#{scheduleBean.resetFilter}"
+						styleClass="ui-priority-primary" update="filterForm" />
+
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+
+		<h:form id="findForm">
+			<p:panel id="find" header="Znajdź wolne terminy" widgetVar="panel"
+				style="margin-bottom:20px">
+
+				<h:panelGrid columns="2" cellpadding="10">
+
+					<p:outputLabel value="#{messages.label_doctor2}"
+						for="doctorDropDown" />
+					<p:autoComplete id="doctorDropDown" dropdown="true"
+						value="#{scheduleBean.appointmentForFilter.doctor}" var="doc"
+						completeMethod="#{appointmentBean.completeDoctor}"
+						forceSelection="true" itemLabel="#{doc.surname} #{doc.firstName}"
+						emptyMessage="#{messages.label_no_records_found}"
+						placeholder="#{messages.label_doctor2}" required="true"
+						converter="doctorConverter" itemValue="#{doc}">
+
+						<p:ajax event="itemSelect"
+							listener="#{scheduleBean.onDoctorSelect}"
+							update=":growlForm:growl" />
+					</p:autoComplete>
+
+					<p:outputLabel for="dateBegin"
+						value="#{messages.label_appointmentstartDate}" />
+					<p:calendar id="dateBegin"
+						value="#{scheduleBean.appointmentForFilter.appointmentStartDate}"
+						locale="pl" pattern="dd/MM/yyyy HH:mm" mask="true" required="true">
+						<p:clientValidator event="keyup" />
+						<p:ajax event="dateSelect" update="dateEnd" />
+					</p:calendar>
+
+					<p:outputLabel for="dateEnd"
+						value="#{messages.label_appointmentEndtDate}" />
+					<p:calendar id="dateEnd"
+						value="#{scheduleBean.appointmentForFilter.appointmentEndtDate}"
+						mindate="#{scheduleBean.appointmentForFilter.appointmentStartDate}"
+						locale="pl" pattern="dd/MM/yyyy HH:mm" mask="true" required="true">
+						<f:attribute name="startDate"
+							value="#{scheduleBean.appointmentForFilter.appointmentStartDate}" />
+						<f:validator validatorId="custom.dateRangeValidator" />
+					</p:calendar>
+
+					<p:commandButton ajax="false" value="#{messages.label_apply}"
+						id="filterButton"
+						actionListener="#{scheduleBean.findAvaiableDates}"
+						styleClass="ui-priority-primary" />
+
+					<p:commandButton value="#{messages.label_clear}"
+						id="ClearFilterButton" process="@this"
+						actionListener="#{scheduleBean.resetFilter}"
+						styleClass="ui-priority-primary" update="findForm">
+						<p:resetInput target="findForm" />
+					</p:commandButton>
+				</h:panelGrid>
+
+				<p:dataTable id="freeAppointmentsTable"
+					value="#{scheduleBean.availableAppointments}" var="freeAppointment"
+					emptyMessage="#{messages.label_no_records_found}" summary="">
+					<f:facet name="header">
+						<h:outputText value="#{messages.label_freeTerms}" />
+					</f:facet>
+
+					<p:column headerText="#{messages.label_from}">
+						<p:commandLink id="startDateCommand"
+							update=":scheduleForm:eventDialog"
+							oncomplete="PF('eventDialog').show();"
+							action="#{scheduleBean.convertAvailableAppointment()}">
+							<f:setPropertyActionListener
+								target="#{scheduleBean.availableAppointment}"
+								value="#{freeAppointment}" />
+							<h:outputText id="startDate" value="#{freeAppointment.startDate}">
+								<f:convertDateTime timeStyle="short"
+									pattern="EEE, dd/MM/YYYY HH:mm" type="both" />
+							</h:outputText>
+						</p:commandLink>
+
+					</p:column>
+
+					<p:column headerText="#{messages.label_to}">
+						<h:outputText id="endDate" value="#{freeAppointment.endDate}">
+							<f:convertDateTime timeStyle="short"
+								pattern="EEE, dd/MM/YYYY HH:mm" type="both" />
+						</h:outputText>
+					</p:column>
+				</p:dataTable>
+
+			</p:panel>
+		</h:form>
+
+		<h:form id="scheduleForm">
+
+			<h:outputScript library="js" name="timePickerLocale.js" />
+			<h:outputScript library="js" name="timeRangeScript.js" />
+
+			<p:schedule id="schedule" locale="pl" allDaySlot="false"
+				timeFormat="HH:mm{ - HH:mm}" editable="true" axisFormat="HH:mm"
+				timeZone="GMT+2" value="#{scheduleBean.eventModel}"
+				style="width: 100% !important;" widgetVar="myschedule">
+
+				<p:ajax event="dateSelect" listener="#{scheduleBean.onDateSelect}"
+					update="eventDetails" oncomplete="PF('eventDialog').show();" />
+				<p:ajax event="eventSelect" listener="#{scheduleBean.onEventSelect}"
+					update="eventDetails :growlForm:growl"
+					oncomplete="PF('eventDialog').show();" />
+				<p:ajax event="eventMove" listener="#{scheduleBean.onEventMove}"
+					update=":growlForm:growl :findForm:freeAppointmentsTable"
+					oncomplete="PF('myschedule').update();" />
+				<p:ajax event="eventResize" listener="#{scheduleBean.onEventResize}"
+					update=":growlForm:growl :findForm:freeAppointmentsTable"
+					oncomplete="PF('myschedule').update();" />
+
+			</p:schedule>
+
+			<p:dialog widgetVar="eventDialog" id="eventDialog"
+				header="#{messages.label_eventdetails}">
+
+				<p:outputLabel for="title"
+					value="#{messages.label_appointmentdetails}" />
+				<p:inputText id="title" value="#{scheduleBean.event.title}"
+					required="true" />
+
+				<h:panelGrid id="eventDetails" columns="2">
+
+					<p:outputLabel for="patientInput"
+						value="#{messages.label_patient2}" />
+					<p:autoComplete id="patientInput"
+						value="#{scheduleBean.event.patient}" var="pat"
+						itemLabel="#{pat.surname} #{pat.firstName}"
+						emptyMessage="#{messages.label_no_records_found}"
+						placeholder="#{messages.label_patient2}"
+						converter="personConverter" itemValue="#{pat}"
+						completeMethod="#{appointmentBean.completePatient}"
+						dropdown="true" required="true" forceSelection="true" />
+
+					<p:outputLabel for="doctorInput" value="#{messages.label_doctor2}" />
+					<p:autoComplete id="doctorInput"
+						value="#{scheduleBean.event.doctor}" var="doc"
+						completeMethod="#{appointmentBean.completeDoctor}" dropdown="true"
+						itemLabel="#{doc.surname} #{doc.firstName}"
+						emptyMessage="#{messages.label_no_records_found}"
+						placeholder="#{messages.label_patient2}"
+						converter="doctorConverter" itemValue="#{doc}" required="true"
+						forceSelection="true">
+						<p:ajax event="itemSelect"
+							listener="#{scheduleBean.onDoctorSelect}"
+							update=":growlForm:growl" />
+					</p:autoComplete>
+
+					<p:outputLabel for="startTime"
+						value="#{messages.label_appointmentstartDate}" />
+					<pe:timePicker id="startTime" styleClass="timePicker"
+						value="#{scheduleBean.event.startTime}" mode="popup"
+						widgetVar="startTimeWidget" locale="pl" required="true"
+						onHourShow="tpStartOnHourShowCallback"
+						onMinuteShow="tpStartOnMinuteShowCallback"
+						requiredMessage="#{messages.required}" />
+
+					<p:outputLabel for="endTime"
+						value="#{messages.label_appointmentEndtDate}" />
+					<pe:timePicker id="endTime" value="#{scheduleBean.event.endTime}"
+						mode="popup" widgetVar="endTimeWidget" locale="pl" required="true"
+						onHourShow="tpEndOnHourShowCallback"
+						onMinuteShow="tpEndOnMinuteShowCallback"
+						requiredMessage="#{messages.required}" />
+					<p:commandButton id="saveButton" value="#{messages.label_save}"
+						actionListener="#{scheduleBean.addEvent}"
+						oncomplete="PF('myschedule').update();PF('eventDialog').hide();"
+						update=":growlForm:growl :findForm:freeAppointmentsTable" />
+
+					<p:commandButton id="delButton" value="#{messages.label_delete}"
+						actionListener="#{scheduleBean.deleteEvent}"
+						oncomplete="PF('myschedule').update();PF('eventDialog').hide();"
+						update=":growlForm:growl :findForm:freeAppointmentsTable" />
+				</h:panelGrid>
+			</p:dialog>
+		</h:form>
+
+	</ui:define>
+</ui:composition>
+</html>

@@ -1,0 +1,15 @@
+{
+"cols": [
+{"label": "Run", "type": "string"},
+{"label": "Custom key", "type": "string"},
+{"label": "Timestamp", "type": "string"},
+{"label": "testCountDoctors", "type": "string"} ,
+{"label": "testFindAllDoctors", "type": "string"} ,
+{"label": "testFindDoctor", "type": "string"} ,
+{"label": "testFindDoctorEntries", "type": "string"} ,
+{"label": "testFlush", "type": "string"} ,
+{"label": "testMergeUpdate", "type": "string"} ,
+{"label": "testPersist", "type": "string"} ],
+"rows": [
+{"c": [{"v": "1"}, {"v": "[1]"}, {"v": "2014-09-06 13:06:28.914"}, {"v": 0.011}, {"v": 0.011}, {"v": 0.011}, {"v": 0.011}, {"v": 0.01}, {"v": 0.01}, {"v": 0.011}]}
+]}

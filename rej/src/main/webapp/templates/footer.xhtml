@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+<ui:composition>
+  <div id="footer">
+    <h:form>
+      <p:separator style="margin-top:15px;" />
+      <h:panelGrid columns="2" cellspacing="0" cellpadding="0">
+        <h:panelGrid width="1200" cellspacing="0" cellpadding="0">
+          <h:panelGrid columns="6">
+            <h:outputLink value="../pages/main.jsf">#{messages.label_home}</h:outputLink>
+            <h:outputText value="| #{messages.label_language}:" />
+            
+        <h:panelGrid align="right">
+          <h:outputLink value="http://springsource.org">
+            <h:graphicImage library="images" name="springsource-logo.png" alt="SpringSource" />
+          </h:outputLink>
+            <h:commandLink id="logout" action="#{loginBean.logout}" value="Wyloguj" ></h:commandLink>
+        </h:panelGrid>
+      </h:panelGrid>
+        </h:panelGrid>
+      </h:panelGrid>
+    </h:form>
+  </div>
+</ui:composition>
+</html>

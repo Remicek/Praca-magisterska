@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"> <ui:composition>
+
+	<p:outputLabel value="#{messages.label_appointmentdetails}"
+		for="appointmentdetails" />
+	<p:inputText id="appointmentdetails"
+		value="#{appointmentBean.appointment.appointmentDetails}"
+		required="true" requiredMessage="#{messages.required}">
+		<p:clientValidator event="keyup" />
+		<f:validateLength minimum="3" maximum="20" />
+	</p:inputText>
+	<p:message for="appointmentdetails" />
+
+	<h:outputLabel for="patientInput" value="#{messages.label_patient2}" />
+	<p:autoComplete id="patientInput"
+		value="#{appointmentBean.appointment.patient}" var="pat"
+		itemLabel="#{pat.surname} #{pat.firstName}"
+		emptyMessage="#{messages.label_no_records_found}"
+		placeholder="#{messages.label_patient2}" 
+		converter="personConverter" itemValue="#{pat}"
+		completeMethod="#{appointmentBean.completePatient}" 
+		required="true" requiredMessage="#{messages.required}">
+		<p:clientValidator event="keyup" />
+	</p:autoComplete>
+	<p:message for="patientInput" />
+
+	<h:outputLabel for="doctorInput" value="#{messages.label_doctor2}" />
+	<p:autoComplete id="doctorInput"
+		value="#{appointmentBean.appointment.doctor}" var="doc"
+		completeMethod="#{appointmentBean.completeDoctor}" 
+		itemLabel="#{doc.surname} #{doc.firstName}"
+		emptyMessage="#{messages.label_no_records_found}"
+		placeholder="#{messages.label_doctor2}"  converter="doctorConverter"
+		itemValue="#{doc}" required="true"
+		requiredMessage="#{messages.required}">
+		<p:clientValidator event="keyup" />
+
+		<p:ajax event="itemSelect" listener="#{scheduleBean.onDoctorSelect}"
+			update=":growlForm:growl" />
+	</p:autoComplete>
+	<p:message for="doctorInput" />
+
+	<p:outputLabel value="#{messages.label_appointmentstartDate}"
+		for="appointmentstartdate" />
+	<p:calendar id="appointmentstartdate"
+		value="#{appointmentBean.appointment.appointmentStartDate}"
+		pattern="dd-MM-yyyy HH:mm" mask="true" required="true"
+		requiredMessage="#{messages.required}">
+		<p:ajax event="dateSelect" update="appointmentenddate" />
+	</p:calendar>
+	<p:message for="appointmentstartdate" />
+
+	<p:outputLabel value="#{messages.label_appointmentEndtDate}"
+		for="appointmentenddate" />
+	<p:calendar id="appointmentenddate"
+		mindate="#{appointmentBean.appointment.appointmentStartDate}"
+		value="#{appointmentBean.appointment.appointmentEndtDate}"
+		pattern="dd-MM-yyyy HH:mm" mask="true" required="true"
+		requiredMessage="#{messages.required}">
+		<f:attribute name="startDate"
+			value="#{appointmentBean.appointment.appointmentStartDate}" />
+		<f:validator validatorId="custom.dateRangeValidator" />
+	</p:calendar>
+	<p:message for="appointmentenddate" />
+</ui:composition> </html>

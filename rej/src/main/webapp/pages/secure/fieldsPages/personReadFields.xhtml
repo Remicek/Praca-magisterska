@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"> 
+	<ui:composition>
+	<p:outputLabel value="#{messages.label_name}" for="firstName" />
+						<h:outputText id="firstName"
+							value="#{personBean.person.firstName}" />
+
+						<p:outputLabel value="#{messages.label_surname}" for="surname" />
+						<h:outputText id="surname" value="#{personBean.person.surname}" />
+
+						<p:outputLabel value="#{messages.label_fathername}"
+							for="fatherName" />
+						<h:outputText id="fatherName"
+							value="#{personBean.person.fatherName}" />
+
+						<p:outputLabel value="#{messages.label_birthdate}" for="birthdate" />
+						<h:outputText id="birthdate"
+							value="#{personBean.person.birthDate}" pattern="dd-MM-yyyy" />
+
+						<p:outputLabel value="#{messages.label_pesel}" for="pesel" />
+						<h:outputText id="pesel" value="#{personBean.person.pesel}" />
+
+						<p:outputLabel value="#{messages.label_maidensurname}"
+							for="maidensurname" />
+						<h:outputText id="maidensurname"
+							value="#{personBean.person.maidenSurname}" />
+
+						<p:outputLabel value="#{messages.label_cardnumber}"
+							for="cardnumber" />
+						<h:outputText id="cardnumber"
+							value="#{personBean.person.cardNumber}" />
+
+						<p:outputLabel value="#{messages.label_nfz}" for="nfz" />
+						<h:outputText id="nfz" value="#{personBean.person.nfz}" />
+
+						<p:outputLabel value="#{messages.label_legitimationid}"
+							for="legitimationid" />
+						<h:outputText id="legitimationid"
+							value="#{personBean.person.legitimationID}" />
+
+						<p:outputLabel value="#{messages.label_address}" for="address" />
+						<h:outputText id="address" value="#{personBean.person.address}" />
+
+						<p:outputLabel value="#{messages.label_telephonenumber}"
+							for="telephonenumber" />
+						<h:outputText id="telephonenumber"
+							value="#{personBean.person.telephoneNumber}" />
+
+						<p:outputLabel value="#{messages.label_mail}" for="mail" />
+						<h:outputText id="mail" value="#{personBean.person.mail}" />
+
+						<p:outputLabel value="#{messages.label_attendingphysician}"
+							for="doctorDropDown" />
+						<p:autoComplete id="doctorDropDown"
+							value="#{personBean.person.attendingPhysician}" var="doc"
+							completeMethod="#{personBean.completeAttendingPhysician}"
+							dropdown="true" forceSelection="true"
+							itemLabel="#{doc.firstName} #{doc.surname}"
+							converter="doctorConverter" itemValue="#{doc}" disabled="true" />
+
+</ui:composition> </html>

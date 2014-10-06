@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<faces-config version="2.0" xmlns="http://java.sun.com/xml/ns/javaee"
+ xmlns:xi="http://www.w3.org/2001/XInclude"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+ <!--     Converters -->
+ <converter>
+  <converter-id>doctorConverter</converter-id>
+  <converter-class>com.przychodnia.rejestracja.jsf.converter.DoctorConverter</converter-class>
+ </converter>
+ <converter>
+  <converter-id>personConverter</converter-id>
+  <converter-class>com.przychodnia.rejestracja.jsf.converter.PersonConverter</converter-class>
+ </converter>
+ <converter>
+  <converter-id>appointmentConverter</converter-id>
+  <converter-class>com.przychodnia.rejestracja.jsf.converter.AppointmentConverter</converter-class>
+ </converter>
+ <converter>
+  <converter-id>dayOfWeekConverter</converter-id>
+  <converter-class>com.przychodnia.rejestracja.jsf.converter.DayOfWeekConverter</converter-class>
+ </converter>
+  <converter>
+  <converter-id>org.primefaces.convert.DateTimeConverter</converter-id>
+  <converter-class>com.przychodnia.rejestracja.jsf.converter.DefaultDateConverter</converter-class>
+ </converter>
+ 
+<!--  Nawigacja -->
+ <navigation-rule>
+  <display-name>pages/secure/secured.xhtml</display-name>
+  <from-view-id>/pages/secure/secured.xhtml</from-view-id>
+  <navigation-case>
+   <from-action>#{loginBean.logout}</from-action>
+   <from-outcome>loggedout</from-outcome>
+   <to-view-id>/pages/common/login.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>
+  <display-name>pages/common/login.xhtml</display-name>
+  <from-view-id>/pages/common/login.xhtml</from-view-id>
+  <navigation-case>
+   <from-action>#{loginBean.login}</from-action>
+   <from-outcome>secured</from-outcome>
+   <to-view-id>/pages/secure/main.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+ <!--     Validators -->
+ <validator>
+  <validator-id>custom.emailValidator</validator-id>
+  <validator-class>com.przychodnia.rejestracja.jsf.validator.EmailValidator</validator-class>
+ </validator>
+ <validator>
+  <validator-id>custom.dateRangeValidator</validator-id>
+  <validator-class>com.przychodnia.rejestracja.jsf.validator.DateRangeValidator</validator-class>
+ </validator>
+ 
+ <application>
+  <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+<!--   Etykiety wiadomosci -->
+  <resource-bundle>
+   <base-name>com.przychodnia.rejestracja.jsf.i18n.messages</base-name>
+   <var>messages</var>
+  </resource-bundle>
+<!--  Wiadomosci bledow -->
+  <message-bundle>com.przychodnia.rejestracja.jsf.i18n.errorMessages</message-bundle>
+  <locale-config>
+   <default-locale>pl</default-locale>
+  </locale-config>
+ </application>
+ <factory>
+  <exception-handler-factory>com.przychodnia.rejestracja.jsf.util.ViewExpiredExceptionExceptionHandlerFactory</exception-handler-factory>
+ </factory>
+</faces-config>

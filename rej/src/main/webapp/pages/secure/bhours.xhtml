@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition template="../../templates/layout.xhtml">
+	<ui:define name="content">
+
+		<h:form prependId="false" id="growlForm">
+			<p:growl id="growl" showDetail="true" escape="false" />
+		</h:form>
+
+		<h:form id="createForm">
+			<h:outputScript library="js" name="timePickerLocale.js" />
+			<h:outputScript library="js" name="timeRangeScript.js" />
+
+			<p:panel id="createPanel" header="Stworz harmonogram"
+				toggleable="true" toggleSpeed="500" closeSpeed="500"
+				widgetVar="panel" style="margin-bottom:20px">
+
+				<h:panelGrid columns="3">
+
+					<ui:insert name="bhoursEditFields">
+						<ui:include src="fieldsPages/bhoursWriteFields.xhtml" />
+					</ui:insert>
+
+					<p:commandButton ajax="false" value="#{messages.label_add}"
+						id="addButton" actionListener="#{bhoursBean.persist}"
+						update=":dataForm:details, :dataForm:master"
+						styleClass="ui-priority-primary" />
+
+					<p:commandButton ajax="false" value="#{messages.label_clear}"
+						id="ClearFilterButton" actionListener="#{bhoursBean.reset}"
+						styleClass="ui-priority-primary" update=":createForm:createPanel" />
+
+					<p:commandButton ajax="false" value="" id="deleteButton"
+						rendered="false" actionListener="#{bhoursBean.remove}"
+						update=":dataForm:details, :dataForm:master"
+						styleClass="ui-priority-primary" />
+
+				</h:panelGrid>
+			</p:panel>
+		</h:form>
+
+		<h:form id="dataForm">
+
+			<p:panel id="data" toggleable="true" toggleSpeed="250">
+				<f:facet name="header">
+					<h:outputText value="#{messages.label_officeHours}" />
+				</f:facet>
+				<h:outputFormat id="noRecordsFound"
+					value="#{messages.label_no_records_found}"
+					rendered="#{!bhoursBean.dataVisible}">
+					<f:param value="Bhours" />
+				</h:outputFormat>
+
+				<p:dataTable id="master" value="#{doctorBean.allDoctors}"
+					var="doctor" filteredValue="#{doctorBean.filteredDoctors}"
+					rendered="#{doctorBean.dataVisible}" resizableColumns="false"
+					emptyMessage="#{messages.label_no_records_found}"
+					selectionMode="single" selection="#{bhoursBean.selectedDoctor}"
+					rowKey="#{doctor.id}" paginator="true"
+					paginatorTemplate=" {CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+					rowsPerPageTemplate="5,10,25,50" rows="10">
+
+					<p:ajax event="rowSelect" listener="#{bhoursBean.onRowSelect}"
+						update=":growlForm:growl, :dataForm:details" />
+					<p:ajax event="rowUnselect" listener="#{bhoursBean.onRowUnselect}"
+						update=":growlForm:growl" />
+
+					<ui:insert name="doctorTableReadFields">
+						<ui:include src="fieldsPages/doctorTableReadFields.xhtml" />
+					</ui:insert>
+				</p:dataTable>
+
+				<p:dataTable id="details"
+					value="#{bhoursBean.filteredBhoursesForDoctor}"
+					emptyMessage="#{messages.label_no_records_found}" var="bhours"
+					rendered="#{bhoursBean.dataVisible}" resizableColumns="false">
+					<ui:insert name="bhoursReadFields">
+						<ui:include src="fieldsPages/bhoursReadFields.xhtml" />
+					</ui:insert>
+
+					<p:column styleClass="action-column" exportable="false">
+						<f:facet name="header">
+							<h:outputText value="#{messages.label_actions}" />
+						</f:facet>
+
+						<p:commandButton id="editButton" icon="ui-icon-pencil"
+							update=":editForm:editPanelGrid" action="#{bhoursBean.onEdit}"
+							oncomplete="PF('editDialogWidget').show()"
+							title="#{messages.label_edit}">
+							<f:setPropertyActionListener value="#{bhours}"
+								target="#{bhoursBean.bhours}" />
+						</p:commandButton>
+
+						<p:commandButton id="deleteButton" icon="ui-icon-trash"
+							oncomplete="PF('deleteDialogWidget').show()"
+							title="#{messages.label_delete}">
+							<f:setPropertyActionListener value="#{bhours}"
+								target="#{bhoursBean.bhours}" />
+
+						</p:commandButton>
+					</p:column>
+				</p:dataTable>
+
+
+				<h:commandLink>
+					<p:graphicImage library="images" name="excel.png" width="24"
+						alt="XLS" />
+					<p:dataExporter type="xls" target="details"
+						fileName="#{messages.label_officeHours}" />
+				</h:commandLink>
+
+				<h:commandLink>
+					<p:graphicImage library="images" name="pdf.png" width="24"
+						alt="PDF" />
+					<p:dataExporter type="pdf" target="details"
+						fileName="#{messages.label_officeHours}" />
+				</h:commandLink>
+			</p:panel>
+		</h:form>
+
+		<p:dialog id="editDialog"
+			header="#{messages.label_edit} #{messages.label_officeHours}"
+			widgetVar="editDialogWidget" dynamic="true" maximizable="true"
+			showEffect="fade">
+			<p:ajax event="close" update=":dataForm:data"
+				listener="#{bhoursBean.handleDialogClose}" />
+			<p:outputPanel id="editPanel">
+				<h:form id="editForm" enctype="multipart/form-data">
+					<h:panelGrid id="editPanelGrid" columns="3" styleClass="dialog"
+						columnClasses="col1,col2,col3">
+
+						<ui:insert name="bhoursEditFields">
+							<ui:include src="fieldsPages/bhoursWriteFields.xhtml" />
+						</ui:insert>
+
+					</h:panelGrid>
+
+					<p:commandButton id="editSaveButton" value="#{messages.label_save}"
+						action="#{bhoursBean.persist}"
+						update="editPanelGrid :growlForm:growl :dataForm:data"
+						onsuccess="PF('editDialogWidget').hide()" />
+					<p:commandButton id="editCloseButton"
+						value="#{messages.label_close}"
+						onclick="PF('editDialogWidget').hide()" type="button" />
+				</h:form>
+			</p:outputPanel>
+		</p:dialog>
+
+		<p:confirmDialog id="deleteDialog" widgetVar="deleteDialogWidget"
+			message="#{messages.label_delete_record}" showEffect="fade"
+			hideEffect="explode" header="#{messages.label_confirm_deletion}"
+			severity="alarm">
+			<p:outputPanel id="deletePanel">
+				<h:form id="deleteForm">
+					<p:commandButton id="deleteYesButton" value="#{messages.label_yes}"
+						action="#{bhoursBean.delete}"
+						update=":dataForm:data :growlForm:growl :dataForm:data"
+						oncomplete="PF('deleteDialogWidget').hide()" />
+					<p:commandButton id="deleteNoButton" value="#{messages.label_no}"
+						onclick="PF('deleteDialogWidget').hide()" type="button" />
+				</h:form>
+			</p:outputPanel>
+		</p:confirmDialog>
+
+	</ui:define>
+</ui:composition>
+</html>

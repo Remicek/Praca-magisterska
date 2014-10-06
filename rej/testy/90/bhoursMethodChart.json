@@ -1,0 +1,24 @@
+{
+"cols": [
+{"label": "method", "type": "string"},
+{"label": "Average time [s]", "type": "number"},
+{"label": "StdDev", "type": "number"},
+{"label": "GC time [s]", "type": "number"},
+{"label": "GC average [s]", "type": "number"},
+{"label": "StdDev", "type": "number"},
+{"label": "GC calls", "type": "number"},
+{"label": "benchmark rounds", "type": "number"},
+{"label": "warmup rounds", "type": "number"},
+{"label": "Total benchmark time", "type": "number"},
+{"label": "Total warmup time", "type": "number"}
+],
+"rows": [
+{"c": [{"v": "testFlush"}, {"v": 0.08}, {"v": 0.0}, {"v": 0.03}, {"v": 0.0}, {"v": 0.0}, {"v": 23}, {"v": 10}, {"v": 5}, {"v": 0.76}, {"v": 0.41}]},
+{"c": [{"v": "testFindBhours"}, {"v": 0.07}, {"v": 0.0}, {"v": 0.03}, {"v": 0.0}, {"v": 0.0}, {"v": 23}, {"v": 10}, {"v": 5}, {"v": 0.74}, {"v": 0.38}]},
+{"c": [{"v": "testPersist"}, {"v": 0.08}, {"v": 0.0}, {"v": 0.03}, {"v": 0.0}, {"v": 0.0}, {"v": 23}, {"v": 10}, {"v": 5}, {"v": 0.75}, {"v": 0.42}]},
+{"c": [{"v": "testMergeUpdate"}, {"v": 0.08}, {"v": 0.0}, {"v": 0.03}, {"v": 0.0}, {"v": 0.0}, {"v": 23}, {"v": 10}, {"v": 5}, {"v": 0.76}, {"v": 0.38}]},
+{"c": [{"v": "testCountBhourses"}, {"v": 0.07}, {"v": 0.0}, {"v": 0.03}, {"v": 0.0}, {"v": 0.0}, {"v": 23}, {"v": 10}, {"v": 5}, {"v": 0.75}, {"v": 0.38}]},
+{"c": [{"v": "testFindAllBhourses"}, {"v": 0.08}, {"v": 0.0}, {"v": 0.03}, {"v": 0.0}, {"v": 0.0}, {"v": 23}, {"v": 10}, {"v": 5}, {"v": 0.76}, {"v": 0.38}]},
+{"c": [{"v": "testRemove"}, {"v": 0.08}, {"v": 0.01}, {"v": 0.03}, {"v": 0.0}, {"v": 0.0}, {"v": 23}, {"v": 10}, {"v": 5}, {"v": 0.79}, {"v": 0.39}]},
+{"c": [{"v": "testFindBhoursEntries"}, {"v": 0.08}, {"v": 0.0}, {"v": 0.03}, {"v": 0.0}, {"v": 0.0}, {"v": 23}, {"v": 10}, {"v": 5}, {"v": 0.75}, {"v": 0.38}]}
+]}

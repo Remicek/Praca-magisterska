@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"> 
+	<ui:composition>
+	<p:outputLabel value="#{messages.label_name}" for="firstName" />
+	<p:inputText id="firstName" value="#{personBean.person.firstName}"
+		required="true" requiredMessage="#{messages.required}">
+		<f:validateLength minimum="3" maximum="20" />
+		<p:clientValidator event="keyup" />
+	</p:inputText>
+	<p:message for="firstName" />
+
+	<p:outputLabel value="#{messages.label_surname}" for="surname" />
+	<p:inputText id="surname" value="#{personBean.person.surname}"
+		required="true" requiredMessage="#{messages.required}">
+		<f:validateLength minimum="3" maximum="50" />
+		<p:clientValidator event="keyup" />
+	</p:inputText>
+	<p:message for="surname" />
+
+	<p:outputLabel value="#{messages.label_fathername}" for="fatherName" />
+	<p:inputText id="fatherName" value="#{personBean.person.fatherName}"
+		required="true" requiredMessage="#{messages.required}">
+		<f:validateLength minimum="3" maximum="50" />
+		<p:clientValidator event="keyup" />
+	</p:inputText>
+	<p:message for="fatherName" />
+
+	<p:outputLabel value="#{messages.label_birthdate}" for="birthdate" />
+	<p:calendar id="birthdate" value="#{personBean.person.birthDate}"
+		pattern="dd-MM-yyyy" mask="true" required="true"
+		requiredMessage="#{messages.required}">
+		<p:clientValidator event="keyup" />
+	</p:calendar>
+	<p:message for="birthdate" />
+
+	<p:outputLabel value="#{messages.label_pesel}" for="pesel" />
+	<p:inputMask id="pesel" value="#{personBean.person.pesel}"
+		mask="99999999999" required="true"
+		requiredMessage="#{messages.required}">
+		<p:clientValidator event="keyup" />
+		<f:validator validatorId="PeselValidator" />
+	</p:inputMask>
+	<p:message for="pesel" />
+
+	<p:outputLabel value="#{messages.label_maidensurname}"
+		for="maidensurname" />
+	<p:inputText id="maidensurname"
+		value="#{personBean.person.maidenSurname}" required="true"
+		requiredMessage="#{messages.required}">
+		<f:validateLength minimum="3" maximum="20" />
+		<p:clientValidator event="keyup" />
+	</p:inputText>
+	<p:message for="maidensurname" />
+
+	<p:outputLabel value="#{messages.label_cardnumber}" for="cardnumber" />
+	<p:inputText id="cardnumber" value="#{personBean.person.cardNumber}"
+		required="true" requiredMessage="#{messages.required}">
+		<p:clientValidator event="keyup" />
+		<f:validateLength minimum="3" maximum="20" />
+	</p:inputText>
+	<p:message for="cardnumber" />
+
+	<p:outputLabel value="#{messages.label_nfz}" for="nfz" />
+	<p:inputText id="nfz" value="#{personBean.person.nfz}" required="true"
+		requiredMessage="#{messages.required}">
+		<p:clientValidator event="keyup" />
+		<f:validateLength minimum="3" maximum="20" />
+	</p:inputText>
+	<p:message for="nfz" />
+
+	<p:outputLabel value="#{messages.label_legitimationid}"
+		for="legitimationid" />
+	<p:inputText id="legitimationid"
+		value="#{personBean.person.legitimationID}" required="true"
+		requiredMessage="#{messages.required}">
+		<p:clientValidator event="keyup" />
+		<f:validateLength minimum="3" maximum="20" />
+	</p:inputText>
+	<p:message for="legitimationid" />
+
+	<p:outputLabel value="#{messages.label_address}" for="address" />
+	<p:inputText id="address" value="#{personBean.person.address}"
+		required="true" requiredMessage="#{messages.required}">
+		<p:clientValidator event="keyup" />
+		<f:validateLength minimum="3" maximum="40" />
+	</p:inputText>
+	<p:message for="address" />
+
+	<p:outputLabel value="#{messages.label_telephonenumber}"
+		for="telephonenumber" />
+	<p:inputText id="telephonenumber"
+		value="#{personBean.person.telephoneNumber}" required="true"
+		requiredMessage="#{messages.required}">
+		<p:clientValidator event="keyup" />
+		<f:validateLength minimum="3" maximum="20" />
+	</p:inputText>
+	<p:message for="telephonenumber" />
+
+	<p:outputLabel value="#{messages.label_mail}" for="mail" />
+	<p:inputText id="mail" value="#{personBean.person.mail}"
+		required="true" requiredMessage="#{messages.required}">
+		<f:validator validatorId="custom.emailValidator" />
+		<p:clientValidator event="keyup" />
+	</p:inputText>
+	<p:message for="mail" />
+
+	<p:outputLabel value="#{messages.label_attendingphysician}"
+		for="doctorDropDown" />
+	<p:autoComplete id="doctorDropDown"
+		value="#{personBean.person.attendingPhysician}" var="doc"
+		completeMethod="#{personBean.completeAttendingPhysician}"
+		dropdown="true" forceSelection="true"
+		itemLabel="#{doc.surname} #{doc.firstName}"
+		converter="doctorConverter" itemValue="#{doc}" required="true"
+		requiredMessage="#{messages.required}">
+		<p:clientValidator event="keyup" />
+	</p:autoComplete>
+	<p:message for="doctorDropDown" />
+
+</ui:composition> </html>

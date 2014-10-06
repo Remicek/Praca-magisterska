@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	xmlns:p="http://primefaces.org/ui">
+<ui:composition>
+
+	<p:outputLabel for="doctorInput" value="#{messages.label_doctor2}" />
+	<p:autoComplete id="doctorInput" value="#{bhoursBean.bhours.doctor}"
+		var="doc" completeMethod="#{appointmentBean.completeDoctor}"
+		itemLabel="#{doc.surname} #{doc.firstName}" forceSelection="true"
+		emptyMessage="#{messages.label_no_records_found}" required="true"
+		requiredMessage="#{messages.required}"
+		placeholder="#{messages.label_doctor2}" converter="doctorConverter"
+		itemValue="#{doc}" dropdown="true">
+	</p:autoComplete>
+	<p:message for="doctorInput" />
+
+	<p:outputLabel for="dayOfWeekInput" value="#{messages.label_dayOfWeek}" />
+	<p:selectOneMenu id="dayOfWeekInput" required="true"
+		requiredMessage="#{messages.required}"
+		value="#{bhoursBean.bhours.weekDay}" style="width:100%">
+		<f:selectItems value="#{bhoursBean.days}" var="day"
+			itemLabel="#{day.local}" itemValue="#{day.value}" />
+	</p:selectOneMenu>
+	<p:message for="dayOfWeekInput" />
+
+	<p:outputLabel for="startTime" value="#{messages.label_from}" />
+	<pe:timePicker id="startTime" value="#{bhoursBean.bhours.open_time}"
+		mode="popup" widgetVar="startTimeWidget" locale="pl" required="true"
+		onHourShow="tpStartOnHourShowCallback"
+		onMinuteShow="tpStartOnMinuteShowCallback"
+		requiredMessage="#{messages.required}" />
+	<p:message for="startTime" />
+	
+	<p:outputLabel for="endTime"
+		value="#{messages.label_appointmentEndtDate}" />
+	<pe:timePicker id="endTime" value="#{bhoursBean.bhours.close_time}"
+		mode="popup" widgetVar="endTimeWidget" locale="pl" required="true"
+		onHourShow="tpEndOnHourShowCallback"
+		onMinuteShow="tpEndOnMinuteShowCallback"
+		requiredMessage="#{messages.required}" />
+	<p:message for="endTime" />
+
+</ui:composition>
+</html>
